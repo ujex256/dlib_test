@@ -7,11 +7,11 @@ from imutils import face_utils
 
 DEFAULT_LEVEL = 0
 
-img = cv2.imread("input.jpg")
+img = cv2.imread("main.png")
 if img is None:
     raise FileNotFoundError
 
-
+# イラストは不可
 def detect_eye(landmarks, side):
     landmarks = face_utils.shape_to_np(landmarks)
     if side == "left":
