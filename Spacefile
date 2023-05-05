@@ -1,0 +1,11 @@
+# Spacefile Docs: https://go.deta.dev/docs/spacefile/v0
+v: 0
+micros:
+  - name: dlib-test
+    src: ./
+    engine: python3.9
+    commands:
+      - apt install -y cmake
+    run: uvicorn main:app
+    dev: uvicorn main:app --reload
+    primary: true
