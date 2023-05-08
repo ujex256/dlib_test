@@ -2,10 +2,12 @@
 v: 0
 micros:
   - name: dlib-test
-    src: ./
-    engine: python3.9
+    src: .
+    engine: python3.8
     commands:
-      - apt install -y cmake
-    run: uvicorn main:app
+      - python3 -V
+      - apt -qq update
+      - apt install -qq -y cmake
+      - pip install -r requirements-2.txt
     dev: uvicorn main:app --reload
     primary: true

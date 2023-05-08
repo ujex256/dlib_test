@@ -1,17 +1,7 @@
-import time
-
-import cv2
 import dlib
 from imutils import face_utils
 
 
-DEFAULT_LEVEL = 0
-
-img = cv2.imread("main.png")
-if img is None:
-    raise FileNotFoundError
-
-# イラストは不可
 def detect_eye(landmarks, side):
     landmarks = face_utils.shape_to_np(landmarks)
     if side == "left":
@@ -39,38 +29,45 @@ def detect_eye(landmarks, side):
     return top_left, bottom_right
 
 
-# 顔を検出
-start = time.time()
-detector = dlib.get_frontal_face_detector()
+if __name__ == "__main__":
+    import time, cv2
+    DEFAULT_LEVEL = 0
 
-faces = []
-level = int(DEFAULT_LEVEL)
-while len(faces) == 0:
-    if level > 5:
-        break
-    faces = detector(img, level)
-    if len(faces) == 0:
-        print("顔が見つからなかったのでレベルを一つ上げます")
-        print("(レベルが高いほど時間がかかります)\n")
-    level += 1
+    img = cv2.imread("main.png")
+    if img is None:
+        raise FileNotFoundError
 
-print("顔検出にかかった時間:", time.time()-start)
+    # 顔を検出
+    start = time.time()
+    detector = dlib.get_frontal_face_detector()
 
+    faces = []
+    level = int(DEFAULT_LEVEL)
+    while len(faces) == 0:
+        if level > 5:
+            break
+        faces = detector(img, level)
+        if len(faces) == 0:
+            print("顔が見つからなかったのでレベルを一つ上げます")
+            print("(レベルが高いほど時間がかかります)\n")
+        level += 1
 
-# 顔のランドマーク検出
-start = time.time()
-
-predictor = dlib.shape_predictor("data/shape_predictor_68_face_landmarks.dat")
-for face in faces:
-    top_left, bottom_right = detect_eye(predictor(img, face), "left")
-    cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 0)
-
-    top_left, bottom_right = detect_eye(predictor(img, face), "right")
-    cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 0)
-
-print("顔のランドマーク検出にかかった時間:", time.time()-start)
+    print("顔検出にかかった時間:", time.time()-start)
 
 
-cv2.imshow("eye", img)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
+    # 顔のランドマーク検出
+    start = time.time()
+
+    predictor = dlib.shape_predictor("data/shape_predictor_68_face_landmarks.dat")
+    for face in faces:
+        top_left, bottom_right = detect_eye(predictor(img, face), "left")
+        cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 0)
+
+        top_left, bottom_right = detect_eye(predictor(img, face), "right")
+        cv2.rectangle(img, top_left, bottom_right, (0, 255, 0), 0)
+
+    print("顔のランドマーク検出にかかった時間:", time.time()-start)
+
+    cv2.imshow("eye", img)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
