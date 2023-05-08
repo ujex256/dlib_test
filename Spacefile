@@ -9,5 +9,6 @@ micros:
       - apt -qq update
       - apt install -qq -y cmake
       - pip install -r requirements-2.txt
-    dev: uvicorn main:app --reload
+    run: uvicorn main:app
+    dev: env/bin/uvicorn main:app --reload
     primary: true
