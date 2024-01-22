@@ -12,3 +12,4 @@ micros:
     run: uvicorn main:app
     dev: env/bin/uvicorn main:app --reload
     primary: true
+
